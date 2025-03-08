@@ -348,190 +348,38 @@ export async function setApiKey(publisher: string, apiKey: string) {
   return -1
 }
 
-function parseJsonResults(publisher2models: Map<string, ModelConfig>, publishers: string[], supportedLLMsJson: []) {
-
-  const try_url = Zotero.Prefs.get(`${config.addonRef}.customModelApiUrl`)
-  Zotero.log(try_url)
-  if (!try_url) {
-    Zotero.log("Setting default values for custom model")
-    Zotero.Prefs.set(`${config.addonRef}.customModelApiUrl`, "https://api.openai.com/v1/chat/completions")
-    Zotero.Prefs.set(`${config.addonRef}.customModelApiKey`, "xxxx2552xxxx41xxxx58xxxxc31xxxx7")
-    Zotero.Prefs.set(`${config.addonRef}.customModelApiModel`, "gpt-4o")
-  }
-
-  // get base_url, api_key, model from Zotero.Prefs
-  const curAPIUrl = Zotero.Prefs.get(`${config.addonRef}.customModelApiUrl`)
-  const curAPIKey = Zotero.Prefs.get(`${config.addonRef}.customModelApiKey`)
-  const curModel = Zotero.Prefs.get(`${config.addonRef}.customModelApiModel`)
-
-
-  Zotero.Prefs.set(`${config.addonRef}.usingAPIKEY`, curAPIKey as string)
-  Zotero.Prefs.set(`${config.addonRef}.usingAPIURL`, curAPIUrl as string)
-  Zotero.Prefs.set(`${config.addonRef}.usingModel`, curModel as string)
-
-
-
-
-
-  // var curPublisher = Zotero.Prefs.get(`${config.addonRef}.usingPublisher`)
-  // for (var i = 0; i < supportedLLMsJson.length; i++) {
-  //   const publisher = supportedLLMsJson[i]["Publisher"]
-  //   var models = []
-  //   var modelsAreReady = new Map()
-
-  //   models = supportedLLMsJson[i]["Models"]
-
-  //   // pref("extensions.zotero.__addonRef__.customModelApiUrl", "https://api.openai.com/v1/chat/completions");
-  //   // pref("extensions.zotero.__addonRef__.customModelApiKey", "xxxx2552xxxx41xxxx58xxxxc31xxxx7");
-  //   // pref("extensions.zotero.__addonRef__.customModelApiModel", "gpt-4o");
-
-  //   // try get url. if url is not set, then set all above three to default value
-  //   const try_url = Zotero.Prefs.get(`${config.addonRef}.customModelApiUrl`)
-  //   if (try_url.length == 0) {
-  //     Zotero.Prefs.set(`${config.addonRef}.customModelApiUrl`, "https://api.openai.com/v1/chat/completions")
-  //     Zotero.Prefs.set(`${config.addonRef}.customModelApiKey`, "xxxx2552xxxx41xxxx58xxxxc31xxxx7")
-  //     Zotero.Prefs.set(`${config.addonRef}.customModelApiModel`, "gpt-4o")
-  //   }
-
-
-  //   var customizedModel = Zotero.Prefs.get(`${config.addonRef}.customModelApiModel`)
-  //   if (customizedModel.length > 0 && models.length == 0) {
-  //     models.push(customizedModel)
-  //   } else if (customizedModel.length > 0 && models.length > 0) {
-  //     models[0] = customizedModel
-  //   }
-
-
-  //   // var apiKey = supportedLLMsJson[i].hasOwnProperty("API_KEY") ? supportedLLMsJson[i]["API_KEY"] : ""
-  //   // if (apiKey.length == 0) {
-  //   //   if (publisher == "OpenAI") {
-  //   //     apiKey = Zotero.Prefs.get(`${config.addonRef}.openaiApiKey`)
-  //   //   } else if (publisher == "Claude-3") {
-  //   //     apiKey = Zotero.Prefs.get(`${config.addonRef}.claudeApiKey`)
-  //   //   } else if (publisher == "Gemini") {
-  //   //     apiKey = Zotero.Prefs.get(`${config.addonRef}.geminiApiKey`)
-  //   //   } else if (publisher == "Customized") {
-  //   //     apiKey = Zotero.Prefs.get(`${config.addonRef}.customModelApiKey`)
-  //   //   }
-  //   // }
-
-  //   // var apiUrl = supportedLLMsJson[i]["API_URL"]
-  //   // if (publisher == "Customized" && apiUrl.length == 0) {
-  //   //   apiUrl = Zotero.Prefs.get(`${config.addonRef}.customModelApiUrl`)
-  //   // }
-
-
-  //   let modelConfig: ModelConfig = {
-  //     models: models,
-  //     hasApiKey: true,
-  //     apiKey: curAPIKey as string,
-  //     areModelsReady: modelsAreReady,
-  //     defaultModelIdx: 0,
-  //     apiUrl: apiUrl
-  //   }
-
-  //   if (publisher == curPublisher && supportedLLMsJson[i].hasOwnProperty("API_KEY") && supportedLLMsJson[i]["API_KEY"].length > 0) {
-  //     Zotero.Prefs.set(`${config.addonRef}.usingAPIKEY`, supportedLLMsJson[i]["API_KEY"])
-  //   }
-
-  //   var temp = publisher2models.get(publisher)
-  //   if (temp == null) {
-  //     publishers.push(publisher)
-  //   }
-  //   publisher2models.set(publisher, modelConfig)
-  // }
-}
-
-
 export async function getSupportedLLMs(publisher2models: Map<string, ModelConfig>, publishers:string[], email: string, token: string) {
   Zotero.log("Getting supported LLMs!")
-  const supportedLLMsJson = [
-    {
-      "Publisher": "Customized",
-      "Models": ["gpt-4o"],
-      "API_URL": "",
-
-    },
-  ]
+  
+  // 只设置许可状态，不添加默认模型
   Zotero.Prefs.set(`${config.addonRef}.isLicenseActivated`, true)
-  Zotero.Prefs.set(`${config.addonRef}.supportedLLMs`, JSON.stringify(
-    supportedLLMsJson
-  ))
-  parseJsonResults(publisher2models, publishers, supportedLLMsJson)
-
-  // var httpRequestError = false 
-  // let res 
-  // const views = Zotero.PapersGPT.views as Views
-
-  // var url = ""
-  // var trycount = 0 
-
-  // let isActivated = Zotero.Prefs.get(`${config.addonRef}.isLicenseActivated`)
-  // isActivated = true
-  // const supportedLLMs = Zotero.Prefs.get(`${config.addonRef}.supportedLLMs`) as string
   
-
-  // //! TODO: hack this
-  // if (isActivated 
-  //   && supportedLLMs.length > 0) {
-  //   var supportedLLMsJson = JSON.parse(supportedLLMs)
-  //   if (supportedLLMsJson.length > 0) {
-  //     parseJsonResults(publisher2models, publishers, supportedLLMsJson)
-  //     return 
-  //   } 
-  // }
-    
-
-  // var trycount = 0 
+  // 获取现有的模型配置
+  const customModels = JSON.parse(String(Zotero.Prefs.get(`${config.addonRef}.customModels`) || '[]'));
   
-  // do { 
-  //   url = `https://www.papersgpt.com/api/supportmodels`
-  //   try {
-  //     res = await Zotero.HTTP.request(
-  //       "POST",
-  //       url,
-  //       {
-  //         responseType: "json",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //   body: JSON.stringify({
-  //     email: email,
-  //           token: token,
-  //         }),
-  //   timeout: 2000
-  //       }
-  //     )
-  //   } catch (error: any) {
-  //     try {
-  //       httpRequestError = true
-  //       error = error.xmlhttp.response?.error
-  // Zotero.log(error.message)
-  //     } catch {
-  // Zotero.log(error)
-  // httpRequestError = true
-  //     }
-  //   }
-  //   trycount = trycount + 1
-  // } while (trycount < 2 && httpRequestError)
-  
+  // 解析现有的模型配置
+  parseJsonResults(publisher2models, publishers, customModels)
+}
 
+function parseJsonResults(publisher2models: Map<string, ModelConfig>, publishers: string[], supportedLLMsJson: []) {
+  // 只设置默认 API URL 和 Key，不添加默认模型
+  const try_url = Zotero.Prefs.get(`${config.addonRef}.customModelApiUrl`)
+  if (!try_url) {
+    Zotero.log("Setting default API URL and Key")
+    Zotero.Prefs.set(`${config.addonRef}.customModelApiUrl`, "https://api.openai.com/v1/chat/completions")
+    Zotero.Prefs.set(`${config.addonRef}.customModelApiKey`, "")
+  }
 
-  // if (httpRequestError) {
-  //     Zotero.log("request error")
-  //     return
-  // }
+  // 获取当前设置
+  const curAPIUrl = Zotero.Prefs.get(`${config.addonRef}.customModelApiUrl`)
+  const curAPIKey = Zotero.Prefs.get(`${config.addonRef}.customModelApiKey`)
+  const curModel = Zotero.Prefs.get(`${config.addonRef}.usingModel`)
 
-  // if (res?.response.Code) {
-  //   if (res.response.Code != 200) {
-  //     return
-  //   } 
-  //   Zotero.Prefs.set(`${config.addonRef}.isLicenseActivated`, true)
-  //   var allElements = res?.response.SupportedLLMs as []
-  //   var supportedLLMsStr = JSON.stringify(allElements)
-    
-
-  //   parseJsonResults(publisher2models, publishers, allElements)
-  // }
+  // 只在有当前模型时才设置
+  if (curModel) {
+    Zotero.Prefs.set(`${config.addonRef}.usingAPIKEY`, curAPIKey as string)
+    Zotero.Prefs.set(`${config.addonRef}.usingAPIURL`, curAPIUrl as string)
+    Zotero.Prefs.set(`${config.addonRef}.usingModel`, curModel as string)
+  }
 }
 
