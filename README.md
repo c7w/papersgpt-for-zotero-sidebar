@@ -126,16 +126,12 @@ Note that the `Send` button in sidebar can also be viewed as an instance of Prom
 
 ## Development
 
-```bash
-npm install
+1. Install dependencies by running `npm install`
+2. Configure your development environment by following the instructions in `.env.example`. We recommend creating a dedicated development profile as detailed in the comments.
+3. Create your environment file by renaming `.env.example` to `.env`
+4. Start the development server with `npm run start` or `pnpm run start`
 
-# Modify scripts/zotero-cmd.json to put your zotero executable here. (you may install one in Unix development environment and use X11 forwarding)
-
-node scripts/build.js && npm run start-z7   # build and debug
-
-# Relase your built plugin from builds/papersgpt.xpi
-
-```
+> Hot reloading functionality is provided by [zotero-plugin-template](https://github.com/windingwind/zotero-plugin-template), enabling real-time development
 
 Feel free to contribute, report issues, or suggest features! 😊
 

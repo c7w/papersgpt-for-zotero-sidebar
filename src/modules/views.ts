@@ -2529,12 +2529,6 @@ private createNewMessage(text: string, isUser: boolean) {
   // write 123 in the sidebar
   const modelIconUrl = `chrome://${config.addonRef}/content/icons/gpt.png`;
   const customModels = JSON.parse(String(Zotero.Prefs.get(`${config.addonRef}.customModels`) || '[]'));
-  customModels.push({
-    apimodel: "deepseek-chat",
-    apikey: "sk-c9440fac03c343fe9a30e45b36360180",
-    apiurl: "https://api.deepseek.com/v1/chat/completions",
-    displayName: "DeepSeek Chat"
-  });
   Zotero.Prefs.set(`${config.addonRef}.customModels`, JSON.stringify(customModels));
   const hasModels = customModels && customModels.length > 0;
 
