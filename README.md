@@ -1,3 +1,5 @@
+[2025/06/30] Updated by c7w: 已经被 Gemini 2.5 系列的长上下文折服了，选词提问功能感觉已经几乎失去了意义；maybe 有空的时候直接更新一个 ChatPDF 的版本，把这个栏放在右边然后能直接问 PDF，而不是像现在这样手动选文本
+
 # 📚 PapersGPT for Zotero - Modified Version by c7w
 
 ![teaser](docs/teaser.png)
